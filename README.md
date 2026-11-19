@@ -11,7 +11,7 @@ It runs as a web console and a Slack bot that share one pricing engine, backed b
 > **All data is fictional.** Every company, person and number is synthetic. Defaults are anchored to public 2026 benchmarks, which are linked in the app and below.
 
 - **Live demo (no install):** https://hithakishore-all.github.io/monetizeiq/
-- **2-minute captioned walkthrough:** [docs/media/monetizeiq-walkthrough.mp4](docs/media/monetizeiq-walkthrough.mp4)
+- **2-minute captioned walkthrough:** [watch on Loom](https://www.loom.com/share/401e77a5f5c342a5a1ba42140e0c108e) (also in the repo: [docs/media/monetizeiq-walkthrough.mp4](docs/media/monetizeiq-walkthrough.mp4))
 
 ## Contents
 
