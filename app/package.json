@@ -1,0 +1,23 @@
+{
+  "name": "monetizeiq",
+  "version": "1.0.0",
+  "description": "MonetizeIQ: price the work, not the seat. A pricing decision cockpit for AI agents (web console + Slack bot).",
+  "license": "Apache-2.0",
+  "private": true,
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "offline": "node src/index.js --offline",
+    "test": "node --test test/smoke.test.js",
+    "db:setup": "node scripts/db-setup.js",
+    "data": "python3 ../data/generate_data.py"
+  },
+  "dependencies": {
+    "@slack/bolt": "^4.1.1",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
+}

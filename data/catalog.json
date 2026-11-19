@@ -1,0 +1,1448 @@
+{
+  "version": 1,
+  "demoToday": "2026-11-18",
+  "pricing": {
+    "creditPerAction": 0.1,
+    "byokPerAction": 0.03,
+    "defaultTokenPrice": 3,
+    "staleDays": 45,
+    "readinessGate": 60
+  },
+  "families": {
+    "cx": {
+      "n": "Customer experience",
+      "c": "var(--c2)"
+    },
+    "gtm": {
+      "n": "Go-to-market",
+      "c": "var(--c3)"
+    },
+    "ops": {
+      "n": "Operations",
+      "c": "var(--c5)"
+    },
+    "health": {
+      "n": "Healthcare",
+      "c": "var(--c6)"
+    },
+    "legfin": {
+      "n": "Legal and finance",
+      "c": "var(--c7)"
+    },
+    "build": {
+      "n": "Build and create",
+      "c": "var(--c1)"
+    }
+  },
+  "meters": [
+    {
+      "id": "effort",
+      "n": "Effort",
+      "c": "var(--m-effort)",
+      "d": "Tokens, actions, agent hours. Always measurable; says nothing about value.",
+      "ex": "Credits, per action, token pass-through"
+    },
+    {
+      "id": "output",
+      "n": "Work completed",
+      "c": "var(--m-output)",
+      "d": "A finished unit of work: a case processed, a note signed, a PR merged.",
+      "ex": "Per case, per document, per task"
+    },
+    {
+      "id": "event",
+      "n": "Outcome event",
+      "c": "var(--m-event)",
+      "d": "A business result recorded in a system: a resolution, a meeting held, a claim paid.",
+      "ex": "Per resolution, per meeting, per claim"
+    },
+    {
+      "id": "lift",
+      "n": "Outcome lift",
+      "c": "var(--m-lift)",
+      "d": "Measured improvement against a baseline or holdout: dollars saved, win rate up.",
+      "ex": "Share of verified savings, lift bonus"
+    }
+  ],
+  "categories": [
+    {
+      "id": "support",
+      "fam": "cx",
+      "meter": "event",
+      "name": "Customer support agents",
+      "vend": "e.g. Sierra, Intercom Fin, Decagon, Zendesk AI",
+      "what": "Resolves customer conversations end to end across chat, email and voice.",
+      "quant": "billable = conversations × resolution rate × (1 − reopen rate in window)",
+      "market": "Per resolution is now standard: <a href=\"https://www.intercom.com/help/en/articles/8205718-fin-ai-agent-pricing\">Fin $0.99 per outcome</a>; <a href=\"https://fin.ai/learn/sierra-ai-pricing\">Sierra negotiates per resolution</a>.",
+      "tool": "AI support agent",
+      "unit": "resolved conversation",
+      "task": "conversation",
+      "tasks": "conversations",
+      "rate": "Resolution rate",
+      "seatPrice": 139,
+      "seatName": "helpdesk seat",
+      "perSeat": 250,
+      "scale": 1,
+      "s": 0.65,
+      "sd": 0.05,
+      "vol": 0.12,
+      "actions": 4,
+      "ktok": 40,
+      "infra": 0.03,
+      "price": 0.99,
+      "pmin": 0.25,
+      "pmax": 3,
+      "pstep": 0.01,
+      "excl": 0.08,
+      "disp": 0.04,
+      "tau": 4,
+      "win": 7,
+      "wmax": 30,
+      "winLabel": "Verification window: no reopen within",
+      "metrics": "Resolution rate, 7-day reopen rate, CSAT on AI conversations",
+      "source": "Helpdesk ticket and conversation events",
+      "rule": "No human handoff; no reopen in the window; 2% weekly QA sample",
+      "trail": "Transcript, resolution event, QA verdict",
+      "exclReason": "Reopened in window",
+      "disputeReason": "Customer says not resolved",
+      "prefix": "HD",
+      "ready": [
+        95,
+        85,
+        95,
+        90
+      ],
+      "suffix": [
+        "Mobile",
+        "Air",
+        "Bank",
+        "Home",
+        "Outfitters",
+        "Insurance"
+      ],
+      "profile": "{att} conversations/mo · {seats} support agents",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Conversations per month",
+              100000,
+              5000,
+              500000,
+              5000
+            ],
+            "base": [
+              "Resolved by AI before (%)",
+              0,
+              0,
+              90,
+              1
+            ],
+            "ai": [
+              "Resolved by AI now (%)",
+              65,
+              0,
+              95,
+              1
+            ],
+            "unit": [
+              "Cost of a human-handled conversation ($)",
+              6,
+              1,
+              30,
+              0.5
+            ],
+            "kind": "pct",
+            "out": "resolutions"
+          }
+        ],
+        "attr": 100,
+        "share": 15,
+        "attrNote": "Event outcome: every resolution is verified, so attribution is 100%."
+      }
+    },
+    {
+      "id": "field",
+      "fam": "ops",
+      "meter": "lift",
+      "name": "Service intelligence (field service)",
+      "vend": "e.g. Aquant, ServiceMax, Salesforce Field Service",
+      "what": "Guides technicians and call centers to the right fix and the right part, and resolves cases remotely.",
+      "quant": "savings = jobs × (parts per job before − after) × part cost + jobs × (avoidable dispatch rate before − after) × dispatch cost",
+      "market": "<a href=\"https://www.aquant.ai/solutions/drive-service-revenue\">Aquant: each avoidable dispatch costs $200–$1,000+</a>; <a href=\"https://www.casestudies.com/company/aquant/case-study/rational-transforms-service-provider-performance-with-aquant\">RATIONAL cut parts per job 34%</a>. Pricing is mostly subscription; a share of verified savings is the outcome path.",
+      "tool": "Service intelligence agent",
+      "unit": "truck roll avoided",
+      "task": "service case",
+      "tasks": "service cases",
+      "rate": "Remote-fix rate",
+      "seatPrice": 250,
+      "seatName": "technician seat",
+      "perSeat": 30,
+      "scale": 0.5,
+      "s": 0.18,
+      "sd": 0.04,
+      "vol": 0.15,
+      "actions": 40,
+      "ktok": 150,
+      "infra": 0.3,
+      "price": 60,
+      "pmin": 10,
+      "pmax": 200,
+      "pstep": 5,
+      "excl": 0.2,
+      "disp": 0.05,
+      "tau": 7,
+      "win": 14,
+      "wmax": 45,
+      "winLabel": "Verification window: no dispatch within",
+      "metrics": "First-time fix rate, parts per job, avoidable dispatch rate, mean time to repair",
+      "source": "Field service work orders, parts consumption in the ERP, dispatch log",
+      "rule": "Case closed remotely; no technician dispatched for the same asset in the window; parts savings compared with a 90-day baseline",
+      "trail": "Work order, asset ID, parts issued, dispatch log",
+      "exclReason": "Technician dispatched in window",
+      "disputeReason": "Fix credited to customer self-service",
+      "prefix": "WO",
+      "ready": [
+        70,
+        55,
+        80,
+        55
+      ],
+      "suffix": [
+        "HVAC Services",
+        "Elevator Co.",
+        "Solar",
+        "Fiber",
+        "Medical Devices",
+        "Utilities"
+      ],
+      "profile": "{seats} technicians · {att} cases/mo",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Service jobs per month",
+              12000,
+              1000,
+              100000,
+              1000
+            ],
+            "base": [
+              "Parts replaced per job, before",
+              2.4,
+              0.5,
+              5,
+              0.1
+            ],
+            "ai": [
+              "Parts replaced per job, with AI",
+              1.6,
+              0.3,
+              5,
+              0.1
+            ],
+            "unit": [
+              "Average part cost ($)",
+              180,
+              20,
+              2000,
+              10
+            ],
+            "kind": "num",
+            "out": "unnecessary parts avoided"
+          },
+          {
+            "vol": [
+              "Service cases per month",
+              12000,
+              1000,
+              100000,
+              1000
+            ],
+            "base": [
+              "Avoidable dispatch rate, before (%)",
+              18,
+              0,
+              40,
+              1
+            ],
+            "ai": [
+              "Avoidable dispatch rate, with AI (%)",
+              12,
+              0,
+              40,
+              1
+            ],
+            "unit": [
+              "Cost per dispatch ($)",
+              450,
+              200,
+              1500,
+              25
+            ],
+            "kind": "pct",
+            "out": "truck rolls avoided",
+            "lower": true
+          }
+        ],
+        "attr": 70,
+        "share": 12,
+        "attrNote": "Lift outcome: savings are measured against a holdout of technicians, so only part is credited to the AI."
+      }
+    },
+    {
+      "id": "revintel",
+      "fam": "gtm",
+      "meter": "lift",
+      "name": "Revenue and sales intelligence",
+      "vend": "e.g. Gong, Clari, Salesloft",
+      "what": "Reads calls, emails and CRM to flag deal risk, coach reps, update records and forecast.",
+      "quant": "value = deals × (win rate with AI − holdout win rate) × deal size + reps × admin hours saved × hourly cost",
+      "market": "<a href=\"https://coworker.ai/blog/gong-pricing\">Gong added metered AI credits on top of seats in June 2026</a>. Usage and workflow meters lead; outcome pricing needs a holdout to prove lift.",
+      "tool": "Deal and forecast agent",
+      "unit": "at-risk deal saved",
+      "task": "deal flagged",
+      "tasks": "deals flagged",
+      "rate": "Save rate on flagged deals",
+      "seatPrice": 120,
+      "seatName": "rep seat",
+      "perSeat": 6,
+      "scale": 1,
+      "s": 0.08,
+      "sd": 0.035,
+      "vol": 0.2,
+      "actions": 60,
+      "ktok": 600,
+      "infra": 0.4,
+      "price": 400,
+      "pmin": 50,
+      "pmax": 1500,
+      "pstep": 25,
+      "excl": 0.35,
+      "disp": 0.08,
+      "tau": 30,
+      "win": 60,
+      "wmax": 180,
+      "winLabel": "Verification window: deal outcome known within",
+      "metrics": "Win rate vs. holdout, forecast error, workflows completed, rep hours saved",
+      "source": "CRM opportunity history, call recordings, frozen forecast snapshots",
+      "rule": "Rep acted on the flag; deal closed-won; lift measured against a 10% holdout of reps",
+      "trail": "Flag, rep action, stage history, holdout comparison",
+      "exclReason": "No lift vs. holdout",
+      "disputeReason": "Deal was already committed",
+      "prefix": "OPP",
+      "ready": [
+        35,
+        30,
+        70,
+        35
+      ],
+      "suffix": [
+        "Software",
+        "Payments",
+        "Cloud",
+        "Networks",
+        "Health Tech",
+        "Freight"
+      ],
+      "profile": "{seats} quota reps · {att} deals flagged/mo",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Qualified deals closing per month",
+              150,
+              10,
+              2000,
+              10
+            ],
+            "base": [
+              "Win rate, holdout reps (%)",
+              22,
+              5,
+              60,
+              1
+            ],
+            "ai": [
+              "Win rate, reps using AI (%)",
+              25,
+              5,
+              60,
+              1
+            ],
+            "unit": [
+              "Average deal size ($)",
+              60000,
+              5000,
+              500000,
+              5000
+            ],
+            "kind": "pct",
+            "out": "extra deals won"
+          },
+          {
+            "vol": [
+              "Reps using the agent",
+              300,
+              10,
+              3000,
+              10
+            ],
+            "base": [
+              "Admin hours per rep per month, before",
+              26,
+              0,
+              60,
+              1
+            ],
+            "ai": [
+              "Admin hours per rep per month, with AI",
+              15,
+              0,
+              60,
+              1
+            ],
+            "unit": [
+              "Loaded rep hour ($)",
+              90,
+              30,
+              250,
+              5
+            ],
+            "kind": "num",
+            "out": "rep hours saved",
+            "lower": true
+          }
+        ],
+        "attr": 50,
+        "share": 10,
+        "attrNote": "Lift outcome: half the win-rate gain is credited to the AI after the holdout comparison."
+      }
+    },
+    {
+      "id": "sdr",
+      "fam": "gtm",
+      "meter": "event",
+      "name": "AI sales development",
+      "vend": "e.g. 11x, Qualified, Outreach agents",
+      "what": "Researches prospects, writes outreach and books meetings for account executives.",
+      "quant": "billable = prospects × meeting rate × (1 − no-show and AE-reject rate)",
+      "market": "<a href=\"https://salestools.io/da/pricing\">$75–$150 per qualified meeting on some enterprise plans</a>; a human SDR costs <a href=\"https://aisdr.com/?p=25591\">about $766 per meeting booked</a>.",
+      "tool": "AI SDR agent",
+      "unit": "qualified meeting held",
+      "task": "prospect worked",
+      "tasks": "prospects worked",
+      "rate": "Meeting rate per prospect",
+      "seatPrice": 1500,
+      "seatName": "AI SDR seat",
+      "perSeat": 800,
+      "scale": 0.06,
+      "s": 0.025,
+      "sd": 0.008,
+      "vol": 0.2,
+      "actions": 12,
+      "ktok": 120,
+      "infra": 0.1,
+      "price": 120,
+      "pmin": 25,
+      "pmax": 300,
+      "pstep": 5,
+      "excl": 0.3,
+      "disp": 0.06,
+      "tau": 3,
+      "win": 5,
+      "wmax": 21,
+      "winLabel": "Verification window: AE accepts within",
+      "metrics": "Meeting rate, show rate, meeting-to-opportunity rate, cost per meeting",
+      "source": "CRM and calendar",
+      "rule": "Meeting held and accepted as qualified by the AE in the window",
+      "trail": "CRM activity, calendar event, AE acceptance stamp",
+      "exclReason": "No-show or AE rejected",
+      "disputeReason": "Duplicate of existing opportunity",
+      "prefix": "MTG",
+      "ready": [
+        80,
+        70,
+        85,
+        70
+      ],
+      "suffix": [
+        "Analytics",
+        "Cloud",
+        "Security",
+        "Software",
+        "Data",
+        "Robotics"
+      ],
+      "profile": "{seats} AI SDR seats · {att} prospects/mo",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Prospects worked per month",
+              20000,
+              1000,
+              200000,
+              1000
+            ],
+            "base": [
+              "Meeting rate before (%)",
+              0,
+              0,
+              5,
+              0.1
+            ],
+            "ai": [
+              "Qualified meeting rate with AI (%)",
+              1.5,
+              0,
+              6,
+              0.1
+            ],
+            "unit": [
+              "Cost per meeting with a human SDR ($)",
+              766,
+              100,
+              1500,
+              10
+            ],
+            "kind": "pct",
+            "out": "qualified meetings"
+          }
+        ],
+        "attr": 90,
+        "share": 15,
+        "attrNote": "Event outcome: AE acceptance verifies each meeting; 10% held back for meetings that would have come inbound anyway."
+      }
+    },
+    {
+      "id": "it",
+      "fam": "ops",
+      "meter": "event",
+      "name": "IT and employee service",
+      "vend": "e.g. ServiceNow, Moveworks",
+      "what": "Resolves employee requests: access, devices, HR and IT questions.",
+      "quant": "billable = tickets × auto-resolve rate × (1 − repeat-ticket rate)",
+      "market": "Mostly seats plus usage; per-resolution offers are emerging. Modeled here.",
+      "tool": "AI service desk agent",
+      "unit": "ticket auto-resolved",
+      "task": "ticket",
+      "tasks": "tickets",
+      "rate": "Auto-resolve rate",
+      "seatPrice": 95,
+      "seatName": "service desk seat",
+      "perSeat": 150,
+      "scale": 1,
+      "s": 0.55,
+      "sd": 0.05,
+      "vol": 0.1,
+      "actions": 5,
+      "ktok": 50,
+      "infra": 0.03,
+      "price": 1.25,
+      "pmin": 0.25,
+      "pmax": 5,
+      "pstep": 0.05,
+      "excl": 0.1,
+      "disp": 0.04,
+      "tau": 4,
+      "win": 7,
+      "wmax": 30,
+      "winLabel": "Verification window: no repeat ticket within",
+      "metrics": "Auto-resolve rate, repeat-ticket rate, time to resolve",
+      "source": "IT service management system",
+      "rule": "Closed without agent touch; no repeat ticket from the same user in the window",
+      "trail": "Ticket history and closure event",
+      "exclReason": "Repeat ticket",
+      "disputeReason": "Employee reopened via chat",
+      "prefix": "INC",
+      "ready": [
+        90,
+        85,
+        90,
+        90
+      ],
+      "suffix": [
+        "Systems",
+        "Logistics",
+        "Manufacturing",
+        "University",
+        "Engineering",
+        "Pharma"
+      ],
+      "profile": "{employees} employees · {att} tickets/mo",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Tickets per month",
+              20000,
+              1000,
+              200000,
+              1000
+            ],
+            "base": [
+              "Auto-resolved before (%)",
+              0,
+              0,
+              80,
+              1
+            ],
+            "ai": [
+              "Auto-resolved with AI (%)",
+              55,
+              0,
+              90,
+              1
+            ],
+            "unit": [
+              "Cost of a human-handled ticket ($, assumption)",
+              22,
+              5,
+              80,
+              1
+            ],
+            "kind": "pct",
+            "out": "auto-resolutions"
+          }
+        ],
+        "attr": 100,
+        "share": 10,
+        "attrNote": "Event outcome, verified per ticket."
+      }
+    },
+    {
+      "id": "claims",
+      "fam": "ops",
+      "meter": "event",
+      "name": "Insurance claims automation",
+      "vend": "e.g. Tractable, Shift Technology",
+      "what": "Assesses damage, checks coverage and settles simple claims straight through.",
+      "quant": "billable = claims × straight-through rate × (1 − reopen or supplement rate)",
+      "market": "Mostly enterprise licenses; per-claim pricing fits because the claim is the unit of work. Modeled here.",
+      "tool": "Claims automation agent",
+      "unit": "claim settled straight-through",
+      "task": "claim",
+      "tasks": "claims",
+      "rate": "Straight-through rate",
+      "seatPrice": 300,
+      "seatName": "adjuster seat",
+      "perSeat": 120,
+      "scale": 0.4,
+      "s": 0.45,
+      "sd": 0.06,
+      "vol": 0.12,
+      "actions": 20,
+      "ktok": 120,
+      "infra": 0.2,
+      "price": 6,
+      "pmin": 1,
+      "pmax": 25,
+      "pstep": 0.5,
+      "excl": 0.1,
+      "disp": 0.03,
+      "tau": 15,
+      "win": 30,
+      "wmax": 90,
+      "winLabel": "Verification window: no reopen or supplement within",
+      "metrics": "Straight-through rate, cycle time, leakage, reopen rate",
+      "source": "Claims system and payments ledger",
+      "rule": "Paid without adjuster touch; no supplement or reopen in the window",
+      "trail": "Claim file, photos, coverage check, payment record",
+      "exclReason": "Supplement filed",
+      "disputeReason": "Policyholder appeal",
+      "prefix": "CLA",
+      "ready": [
+        90,
+        80,
+        95,
+        75
+      ],
+      "suffix": [
+        "Mutual",
+        "Assurance",
+        "Insurance Group",
+        "Auto Club",
+        "Casualty",
+        "Underwriters"
+      ],
+      "profile": "{att} claims/mo · {seats} adjusters",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Claims per month",
+              8000,
+              500,
+              100000,
+              500
+            ],
+            "base": [
+              "Straight-through before (%)",
+              10,
+              0,
+              80,
+              1
+            ],
+            "ai": [
+              "Straight-through with AI (%)",
+              45,
+              0,
+              90,
+              1
+            ],
+            "unit": [
+              "Adjuster cost per manual claim ($, assumption)",
+              85,
+              20,
+              400,
+              5
+            ],
+            "kind": "pct",
+            "out": "claims settled straight-through"
+          }
+        ],
+        "attr": 90,
+        "share": 12,
+        "attrNote": "Event outcome; 10% held back for claims that were already simple."
+      }
+    },
+    {
+      "id": "rcm",
+      "fam": "health",
+      "meter": "event",
+      "name": "Healthcare revenue cycle",
+      "vend": "e.g. AKASA, Infinitus, AGS Health",
+      "what": "Works denials, writes appeals and chases payers to recover revenue.",
+      "quant": "billable = denials worked × overturn rate × recovered dollars × share",
+      "market": "<a href=\"https://medcitynews.com/?p=145272\">Vendors often propose a share of the added revenue</a>.",
+      "tool": "Denials management agent",
+      "unit": "denial overturned",
+      "task": "denial worked",
+      "tasks": "denials worked",
+      "rate": "Overturn rate",
+      "seatPrice": 650,
+      "seatName": "coder seat",
+      "perSeat": 60,
+      "scale": 0.4,
+      "s": 0.42,
+      "sd": 0.06,
+      "vol": 0.12,
+      "actions": 25,
+      "ktok": 250,
+      "infra": 0.5,
+      "price": 24,
+      "pmin": 5,
+      "pmax": 80,
+      "pstep": 1,
+      "excl": 0.1,
+      "disp": 0.03,
+      "tau": 20,
+      "win": 30,
+      "wmax": 90,
+      "winLabel": "Verification window: payment posted, no reversal within",
+      "metrics": "Clean-claim rate, denial rate, overturn rate, dollars recovered",
+      "source": "Clearinghouse and payer remittance files",
+      "rule": "Payer payment posted; no reversal in the window; price about 4% of a $600 average recovery",
+      "trail": "Claim ID, appeal packet, remittance record",
+      "exclReason": "Payer reversed payment",
+      "disputeReason": "Recovered by manual appeal",
+      "prefix": "CLM",
+      "ready": [
+        90,
+        80,
+        95,
+        60
+      ],
+      "suffix": [
+        "Health System",
+        "Medical Group",
+        "Orthopedics",
+        "Children's Hospital",
+        "Cancer Center",
+        "Physician Partners"
+      ],
+      "profile": "{hospitals} · {att} denials/mo",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Denials worked per month",
+              5000,
+              500,
+              50000,
+              500
+            ],
+            "base": [
+              "Overturn rate before (%)",
+              35,
+              0,
+              80,
+              1
+            ],
+            "ai": [
+              "Overturn rate with AI (%)",
+              48,
+              0,
+              90,
+              1
+            ],
+            "unit": [
+              "Average recovery per overturned denial ($)",
+              600,
+              100,
+              5000,
+              50
+            ],
+            "kind": "pct",
+            "out": "extra denials overturned"
+          }
+        ],
+        "attr": 80,
+        "share": 6,
+        "attrNote": "Event outcome; uplift over the prior overturn rate is what is credited."
+      }
+    },
+    {
+      "id": "clinical",
+      "fam": "health",
+      "meter": "output",
+      "name": "Clinical documentation",
+      "vend": "e.g. Abridge, Microsoft Dragon Copilot, Suki",
+      "what": "Listens to the visit and drafts the clinical note for the clinician to sign.",
+      "quant": "billable = encounters × notes signed without major edits",
+      "market": "Mostly per clinician; per-encounter pricing ties cost to visit volume. Modeled here.",
+      "tool": "Ambient documentation agent",
+      "unit": "note signed without major edits",
+      "task": "patient encounter",
+      "tasks": "encounters",
+      "rate": "Sign-without-edit rate",
+      "seatPrice": 400,
+      "seatName": "clinician seat",
+      "perSeat": 300,
+      "scale": 0.3,
+      "s": 0.7,
+      "sd": 0.06,
+      "vol": 0.1,
+      "actions": 6,
+      "ktok": 60,
+      "infra": 0.05,
+      "price": 2,
+      "pmin": 0.25,
+      "pmax": 6,
+      "pstep": 0.05,
+      "excl": 0.12,
+      "disp": 0.02,
+      "tau": 2,
+      "win": 2,
+      "wmax": 14,
+      "winLabel": "Verification window: signed within",
+      "metrics": "Sign-without-edit rate, documentation minutes per visit, after-hours charting",
+      "source": "EHR note audit log",
+      "rule": "Clinician signs the note with edits under 15% of text in the window",
+      "trail": "Note version history, signer, edit distance",
+      "exclReason": "Heavy clinician edits",
+      "disputeReason": "Note amended after signing",
+      "prefix": "ENC",
+      "ready": [
+        80,
+        85,
+        90,
+        90
+      ],
+      "suffix": [
+        "Health",
+        "Medical Center",
+        "Clinics",
+        "Pediatrics",
+        "Family Medicine",
+        "Specialty Care"
+      ],
+      "profile": "{seats} clinicians · {att} encounters/mo",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Encounters per month",
+              30000,
+              1000,
+              300000,
+              1000
+            ],
+            "base": [
+              "Documentation minutes per visit, before",
+              16,
+              2,
+              30,
+              1
+            ],
+            "ai": [
+              "Documentation minutes per visit, with AI",
+              6,
+              1,
+              30,
+              1
+            ],
+            "unit": [
+              "Value of a clinician minute ($, assumption)",
+              3,
+              1,
+              8,
+              0.25
+            ],
+            "kind": "num",
+            "out": "clinician minutes saved",
+            "lower": true
+          }
+        ],
+        "attr": 85,
+        "share": 10,
+        "attrNote": "Output outcome: each signed note is counted; minutes saved are measured against a pre-launch time study."
+      }
+    },
+    {
+      "id": "legal",
+      "fam": "legfin",
+      "meter": "output",
+      "name": "Legal work",
+      "vend": "e.g. Harvey, EvenUp, Spellbook",
+      "what": "Reviews contracts, drafts demands and researches matters for lawyers to approve.",
+      "quant": "billable = matters processed (per case) or redlines accepted by counsel",
+      "market": "<a href=\"https://legaltechnology.com/evenup-launches-ai-drafts-suite-smart-workflow-and-per-case-pricing-model/\">EvenUp moved to per-case pricing</a>; <a href=\"https://amicoreai-website.pages.dev/research/ai_pricing_models_legal_tech\">Harvey and CoCounsel are mostly per seat</a>.",
+      "tool": "Contract review agent",
+      "unit": "redline accepted",
+      "task": "contract",
+      "tasks": "contracts",
+      "rate": "Acceptance rate",
+      "seatPrice": 180,
+      "seatName": "legal seat",
+      "perSeat": 15,
+      "scale": 0.2,
+      "s": 0.6,
+      "sd": 0.08,
+      "vol": 0.18,
+      "actions": 80,
+      "ktok": 400,
+      "infra": 0.3,
+      "price": 25,
+      "pmin": 5,
+      "pmax": 120,
+      "pstep": 5,
+      "excl": 0.2,
+      "disp": 0.05,
+      "tau": 5,
+      "win": 10,
+      "wmax": 30,
+      "winLabel": "Verification window: counsel accepts within",
+      "metrics": "Review cycle time, share auto-approved, redline acceptance rate",
+      "source": "Contract management system",
+      "rule": "Counsel accepts the AI redline without rewrite in the window",
+      "trail": "Version history, reviewer, acceptance stamp",
+      "exclReason": "Counsel rewrote redline",
+      "disputeReason": "Contract withdrawn",
+      "prefix": "CTR",
+      "ready": [
+        65,
+        60,
+        70,
+        65
+      ],
+      "suffix": [
+        "Capital",
+        "Realty",
+        "Biosciences",
+        "Reinsurance",
+        "Holdings",
+        "Energy"
+      ],
+      "profile": "{seats} legal staff · {att} contracts/mo",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Contracts per month",
+              300,
+              10,
+              5000,
+              10
+            ],
+            "base": [
+              "Review hours per contract, before",
+              4,
+              0.5,
+              20,
+              0.5
+            ],
+            "ai": [
+              "Review hours per contract, with AI",
+              1.5,
+              0.25,
+              20,
+              0.25
+            ],
+            "unit": [
+              "Loaded legal hour ($)",
+              350,
+              100,
+              1200,
+              25
+            ],
+            "kind": "num",
+            "out": "lawyer hours saved",
+            "lower": true
+          }
+        ],
+        "attr": 80,
+        "share": 12,
+        "attrNote": "Output outcome; hours saved come from matter time records against a baseline quarter."
+      }
+    },
+    {
+      "id": "ap",
+      "fam": "legfin",
+      "meter": "event",
+      "name": "Finance operations",
+      "vend": "e.g. Vic.ai, Stampli, Ramp",
+      "what": "Reads invoices, matches them to orders and posts them to the ledger.",
+      "quant": "billable = invoices × no-touch rate × (1 − human edit before posting)",
+      "market": "Mostly per invoice volume tiers; true no-touch pricing is an outcome meter. Modeled here.",
+      "tool": "Accounts payable agent",
+      "unit": "invoice processed with no touch",
+      "task": "invoice",
+      "tasks": "invoices",
+      "rate": "No-touch rate",
+      "seatPrice": 110,
+      "seatName": "AP clerk seat",
+      "perSeat": 600,
+      "scale": 0.3,
+      "s": 0.78,
+      "sd": 0.04,
+      "vol": 0.08,
+      "actions": 2,
+      "ktok": 15,
+      "infra": 0.01,
+      "price": 0.25,
+      "pmin": 0.05,
+      "pmax": 1.5,
+      "pstep": 0.05,
+      "excl": 0.06,
+      "disp": 0.02,
+      "tau": 2,
+      "win": 3,
+      "wmax": 14,
+      "winLabel": "Verification window: no human edit within",
+      "metrics": "Straight-through rate, exception rate, days payable outstanding",
+      "source": "ERP journal and AP sub-ledger",
+      "rule": "Posted to the ERP with no human edit in the window; three-way match passed",
+      "trail": "Invoice image, match result, journal entry",
+      "exclReason": "Human edit before posting",
+      "disputeReason": "Duplicate invoice",
+      "prefix": "INV",
+      "ready": [
+        95,
+        90,
+        95,
+        95
+      ],
+      "suffix": [
+        "Foods",
+        "Industrial",
+        "Distribution",
+        "Retail Group",
+        "Construction",
+        "Hospitality"
+      ],
+      "profile": "{att} invoices/mo · {seats} AP staff",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Invoices per month",
+              50000,
+              1000,
+              500000,
+              1000
+            ],
+            "base": [
+              "No-touch before (%)",
+              20,
+              0,
+              90,
+              1
+            ],
+            "ai": [
+              "No-touch with AI (%)",
+              78,
+              0,
+              98,
+              1
+            ],
+            "unit": [
+              "Cost of a manually processed invoice ($, assumption)",
+              9,
+              2,
+              30,
+              0.5
+            ],
+            "kind": "pct",
+            "out": "invoices processed with no touch"
+          }
+        ],
+        "attr": 100,
+        "share": 10,
+        "attrNote": "Event outcome, verified in the ERP journal."
+      }
+    },
+    {
+      "id": "code",
+      "fam": "build",
+      "meter": "output",
+      "name": "Software engineering agents",
+      "vend": "e.g. GitHub Copilot, Cursor, Devin",
+      "what": "Writes, tests and fixes code, and opens pull requests for engineers to review.",
+      "quant": "billable = agent tasks × PRs merged without rework",
+      "market": "<a href=\"https://www.digitalapplied.com/blog/ai-unit-economics-pricing-margins-services-2026-framework\">GitHub moved Copilot plans to usage-based billing in 2026</a>. Heavy token use makes flat seats unprofitable for power users.",
+      "tool": "AI coding agent",
+      "unit": "pull request merged",
+      "task": "agent task",
+      "tasks": "agent tasks",
+      "rate": "Merged-without-rework rate",
+      "seatPrice": 40,
+      "seatName": "developer seat",
+      "perSeat": 120,
+      "scale": 1,
+      "s": 0.35,
+      "sd": 0.07,
+      "vol": 0.25,
+      "actions": 30,
+      "ktok": 250,
+      "infra": 0.05,
+      "price": 3,
+      "pmin": 0.5,
+      "pmax": 15,
+      "pstep": 0.25,
+      "excl": 0.1,
+      "disp": 0.03,
+      "tau": 5,
+      "win": 7,
+      "wmax": 30,
+      "winLabel": "Verification window: not reverted within",
+      "metrics": "Merge rate, rework rate, cycle time, escaped defects",
+      "source": "Git host and CI pipeline",
+      "rule": "PR merged by a human reviewer; tests pass; not reverted in the window",
+      "trail": "PR, review approval, CI run, commit hash",
+      "exclReason": "Reverted in window",
+      "disputeReason": "Engineer rewrote most of the diff",
+      "prefix": "PR",
+      "ready": [
+        75,
+        65,
+        90,
+        85
+      ],
+      "suffix": [
+        "Labs",
+        "Technologies",
+        "Systems",
+        "Software",
+        "Digital",
+        "Platforms"
+      ],
+      "profile": "{seats} developers · {att} agent tasks/mo",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Agent tasks per month",
+              10000,
+              500,
+              200000,
+              500
+            ],
+            "base": [
+              "Merged without rework before (%)",
+              0,
+              0,
+              60,
+              1
+            ],
+            "ai": [
+              "Merged without rework (%)",
+              35,
+              0,
+              80,
+              1
+            ],
+            "unit": [
+              "Value of a merged PR, 2 hours of engineering ($)",
+              200,
+              50,
+              800,
+              10
+            ],
+            "kind": "pct",
+            "out": "PRs merged"
+          }
+        ],
+        "attr": 70,
+        "share": 5,
+        "attrNote": "Output outcome; 30% held back because engineers would have written some of this code anyway."
+      }
+    },
+    {
+      "id": "marketing",
+      "fam": "build",
+      "meter": "lift",
+      "name": "Marketing and content",
+      "vend": "e.g. Jasper, Writer, Typeface",
+      "what": "Generates campaigns, copy and creative, and tests variants.",
+      "quant": "value = sessions × (conversion with AI − control) × value per conversion",
+      "market": "Mostly seats and credits; lift-based fees need a control group. Modeled here.",
+      "tool": "AI content and campaign agent",
+      "unit": "asset approved and shipped",
+      "task": "asset",
+      "tasks": "assets",
+      "rate": "Approval rate",
+      "seatPrice": 125,
+      "seatName": "marketer seat",
+      "perSeat": 80,
+      "scale": 0.5,
+      "s": 0.55,
+      "sd": 0.08,
+      "vol": 0.2,
+      "actions": 15,
+      "ktok": 30,
+      "infra": 0.02,
+      "price": 3.5,
+      "pmin": 0.5,
+      "pmax": 15,
+      "pstep": 0.25,
+      "excl": 0.15,
+      "disp": 0.03,
+      "tau": 3,
+      "win": 5,
+      "wmax": 21,
+      "winLabel": "Verification window: shipped without rewrite within",
+      "metrics": "Conversion lift vs. control, approval rate, time to launch",
+      "source": "Web analytics, marketing automation, approvals in the content system",
+      "rule": "Asset shipped without rewrite; lift measured with a 10% control audience",
+      "trail": "Asset version, approver, experiment ID, conversion events",
+      "exclReason": "Rewritten by editor",
+      "disputeReason": "Brand review rejected",
+      "prefix": "AST",
+      "ready": [
+        55,
+        40,
+        65,
+        70
+      ],
+      "suffix": [
+        "Beauty",
+        "Apparel",
+        "Travel",
+        "Media",
+        "Home Goods",
+        "Fitness"
+      ],
+      "profile": "{seats} marketers · {att} assets/mo",
+      "lab": {
+        "drivers": [
+          {
+            "vol": [
+              "Sessions per month",
+              500000,
+              10000,
+              5000000,
+              10000
+            ],
+            "base": [
+              "Conversion, control group (%)",
+              2,
+              0.2,
+              10,
+              0.1
+            ],
+            "ai": [
+              "Conversion, AI variants (%)",
+              2.3,
+              0.2,
+              10,
+              0.1
+            ],
+            "unit": [
+              "Value per conversion ($)",
+              40,
+              5,
+              500,
+              5
+            ],
+            "kind": "pct",
+            "out": "extra conversions"
+          }
+        ],
+        "attr": 40,
+        "share": 15,
+        "attrNote": "Lift outcome: only 40% of the measured lift is credited after the control comparison."
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "n": 1,
+      "cat": "support",
+      "name": "Ulvane Home",
+      "seg": "Enterprise",
+      "seats": 891,
+      "u": 1.19,
+      "s": 0.7,
+      "t": "Hero run",
+      "d": "Outcome-ready: outcome pricing lifts revenue and margin, and every billed outcome traces to a helpdesk record.",
+      "set": {
+        "model": "outcome"
+      },
+      "color": "var(--good)"
+    },
+    {
+      "n": 2,
+      "cat": "support",
+      "name": "Corvane Outfitters",
+      "seg": "SMB",
+      "seats": 22,
+      "u": 0.29,
+      "s": 0.5,
+      "t": "Renewal risk caught",
+      "d": "A light adopter pays far less under pure outcome. The pane recommends a hybrid floor.",
+      "set": {
+        "model": "outcome"
+      },
+      "color": "var(--warn)"
+    },
+    {
+      "n": 3,
+      "cat": "revintel",
+      "name": "Halvero Software",
+      "seg": "Enterprise",
+      "seats": 620,
+      "u": 1,
+      "s": 0.08,
+      "t": "Product should stop",
+      "d": "Readiness 43: the gate refuses pure outcome and recommends credits plus a lift bonus.",
+      "set": {
+        "model": "outcome"
+      },
+      "color": "var(--crit)"
+    },
+    {
+      "n": 4,
+      "cat": "ap",
+      "name": "Kestane Distribution",
+      "seg": "Mid-market",
+      "seats": 40,
+      "u": 1,
+      "s": 0.78,
+      "t": "Pass-through trap",
+      "d": "Halve model prices and pass-through credit revenue falls about 40%. Try the token slider.",
+      "set": {
+        "model": "credit",
+        "cmode": "pass"
+      },
+      "color": "var(--c5)"
+    },
+    {
+      "n": 5,
+      "cat": "sdr",
+      "name": "Wexmoor Cloud",
+      "seg": "Mid-market",
+      "seats": 6,
+      "u": 1,
+      "s": 0.025,
+      "t": "Dispute-heavy window",
+      "d": "A 2-day AE acceptance window triples disputes. Move it to 5 days and watch them fall.",
+      "set": {
+        "model": "outcome",
+        "win": 2
+      },
+      "color": "var(--c7)"
+    },
+    {
+      "n": 6,
+      "cat": "rcm",
+      "name": "Norvane Health System",
+      "seg": "Enterprise",
+      "seats": 300,
+      "u": 1.1,
+      "s": 0.48,
+      "t": "Clean run",
+      "d": "Outcome-ready; priced at about 4% of recovered dollars.",
+      "set": {
+        "model": "outcome"
+      },
+      "color": "var(--good)"
+    },
+    {
+      "n": 7,
+      "cat": "legal",
+      "name": "Pellwyn Realty",
+      "seg": "Mid-market",
+      "seats": 28,
+      "u": 1,
+      "s": 0.6,
+      "t": "Customer’s own model key",
+      "d": "The vendor bills a platform fee; the customer’s model bill shows separately, striped.",
+      "set": {
+        "model": "credit",
+        "cmode": "byok"
+      },
+      "color": "var(--c3)"
+    },
+    {
+      "n": 8,
+      "cat": "field",
+      "name": "Estrova Fiber",
+      "seg": "Mid-market",
+      "seats": 45,
+      "u": 1,
+      "s": 0.18,
+      "t": "Stale data",
+      "d": "Usage feed is 52 days old, so the recommendation is withheld and marked stale.",
+      "set": {
+        "model": "hybrid"
+      },
+      "flag": "stale",
+      "color": "var(--warn)"
+    },
+    {
+      "n": 9,
+      "cat": "it",
+      "name": "Delmora Pharma",
+      "seg": "Enterprise",
+      "seats": 520,
+      "u": 1,
+      "s": 0.55,
+      "t": "Missing data",
+      "d": "No outcome signal connected: outcome revenue shows as unknown, not $0, and stays out of totals.",
+      "set": {
+        "model": "outcome"
+      },
+      "flag": "missing",
+      "color": "var(--crit)"
+    },
+    {
+      "n": 10,
+      "cat": "revintel",
+      "name": "Tarrow Payments",
+      "seg": "Mid-market",
+      "seats": 110,
+      "u": 1.4,
+      "s": 0.07,
+      "t": "Token exposure",
+      "d": "600k tokens per task: at $10 per 1M tokens, per-action credit margin turns negative.",
+      "set": {
+        "model": "credit",
+        "cmode": "action",
+        "tokp": 10
+      },
+      "color": "var(--c1)"
+    }
+  ]
+}
